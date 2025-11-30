@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Fashionsta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .confirmation-box {
+            text-align: center;
+            padding: 40px 20px;
+            border: 1px solid var(--success-color);
+            background-color: #e8f5e9; /* Light green */
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .confirmation-box h1 { color: var(--success-color); }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Standard Header -->
+         <nav>
+            <div class="logo"><a href="index.html" style="color: var(--primary-color); text-decoration: none;">Fashionsta</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html?category=Men">Men</a></li>
+                <li><a href="products.html?category=Women">Women</a></li>
+                <li><a href="products.html?category=Fashion Accessories">Accessories</a></li>
+            </ul>
+            <div class="nav-icons">
+                <input type="search" id="search-bar" placeholder="Search products...">
+                <div id="autocomplete-results" class="autocomplete-results"></div>
+                <a href="wishlist.html" id="wishlist-link">Wishlist (<span id="wishlist-count">0</span>)</a>
+                <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+                 <span id="user-actions">
+                    <a href="profile.html" id="user-profile-link" style="display:none;">Profile</a>
+                    <a href="login.html" id="login-link">Login</a>
+                    <span id="auth-separator" style="display:none;">/</span> <a href="signup.html" id="signup-link">Signup</a>
+                    <a href="#" id="logout-button" style="display:none;">Logout</a>
+                </span>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="confirmation-box">
+            <h1>Thank You For Your Order!</h1>
+            <p>Your order has been placed successfully.</p>
+            <p id="order-id-display">Your Order ID is: <strong>Loading...</strong></p>
+            <p>We've sent a confirmation email with your order details (simulation).</p>
+            <div style="margin-top: 20px;">
+                <a href="order-history.html" class="btn btn-secondary">View Order History</a>
+                <a href="index.html" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Fashionsta. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            const orderIdDisplay = document.getElementById('order-id-display');
+            if (orderId && orderIdDisplay) {
+                orderIdDisplay.innerHTML = `Your Order ID is: <strong>${orderId}</strong>`;
+            } else if (orderIdDisplay) {
+                 orderIdDisplay.textContent = 'Order ID not found.';
+            }
+            updateCartCount(); // Cart should be empty now, this ensures header is updated
+        });
+    </script>
+</body>
+</html>

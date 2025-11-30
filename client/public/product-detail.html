@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details - Fashionsta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .container { max-width:1200px; margin:0 auto; padding:2rem; }
+    .product-detail-container { display:flex; gap:2rem; margin-top:2rem; }
+    .product-images { flex:1; position:relative; }
+    .main-image img { width:100%; border-radius:8px; }
+    .thumbnail-images { display:flex; margin-top:1rem; gap:0.5rem; }
+    .thumbnail-images img { width:60px; cursor:pointer; border-radius:4px; }
+    .product-details-info { flex:1; }
+    .product-title { font-size:2rem; margin-bottom:0.5rem; }
+    .rating, .price-section { margin:0.5rem 0; font-size:1.1rem; }
+    .sizes-container { margin:1rem 0; }
+    .sizes-container button { margin-right:0.5rem; padding:0.5rem 1rem; border:1px solid #ccc; background:#fff; cursor:pointer; border-radius:4px; }
+    .sizes-container button.selected { background:#000; color:#fff; }
+    .action-buttons button { margin-right:1rem; padding:0.75rem 1.5rem; cursor:pointer; }
+    .tab-header { display:flex; margin-top:2rem; gap:1rem; cursor:pointer; }
+    .tab-link.active { font-weight:bold; border-bottom:2px solid #000; }
+    .tab-content { display:none; margin-top:1rem; }
+    .tab-content.active { display:block; }
+    .review-item { border-bottom:1px solid #eee; padding:0.5rem 0; }
+    .review-rating { color:#f39c12; }
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; }
+    .modal img { max-width:90%; max-height:90%; }
+    .modal .close { position:absolute; top:20px; right:30px; color:#fff; font-size:2rem; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="container">
+      <div class="logo"><a href="index.html">Fashionsta</a></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html?category=Men">Men</a></li>
+        <li><a href="products.html?category=Women">Women</a></li>
+        <li><a href="products.html?category=Fashion Accessories">Accessories</a></li>
+      </ul>
+      <div class="nav-icons">
+        <input id="search-bar" placeholder="Search products..." />
+        <div id="autocomplete-results" class="autocomplete-results"></div>
+        <a href="wishlist.html">Wishlist (<span id="wishlist-count">0</span>)</a>
+        <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+        <span id="user-actions">
+          <a href="login.html" id="login-link">Login</a> 
+          <a href="signup.html" id="signup-link">Signup</a>
+          <a href="#" id="logout-button" style="display:none;">Logout</a>
+        </span>
+        <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div id="product-detail-loader" class="loader">Loading…</div>
+
+    <div class="product-detail-container" style="display:none;">
+      <div class="product-images">
+        <div class="main-image">
+          <img id="product-main-image" src="images/placeholder.png" alt="Product Image">
+          <div id="zoomIcon" class="zoom-icon">🔍</div>
+        </div>
+        <div id="thumbnail-images" class="thumbnail-images"></div>
+      </div>
+
+      <div class="product-details-info">
+        <p class="brand" id="product-brand-detail">Brand</p>
+        <h1 class="product-title" id="product-name-detail">Product Name</h1>
+        <div class="rating" id="product-rating-detail">Rating: N/A</div>
+        <div class="price-section" id="product-price-detail">₹0.00</div>
+        <div class="description">
+          <h4>Product Details</h4>
+          <p id="product-description-detail">Description…</p>
+        </div>
+        <div class="sizes-container">
+          <label>Select Size:</label>
+          <div id="size-options" class="size-options"></div>
+        </div>
+        <div class="quantity-container">
+          <label for="quantity-detail">Quantity:</label>
+          <input type="number" id="quantity-detail" value="1" min="1">
+        </div>
+        <div class="action-buttons">
+          <button id="add-to-cart-btn-detail" class="btn">Add to Cart</button>
+          <button id="add-to-wishlist-btn-detail" class="btn btn-outline">
+            <span class="wishlist-icon">♡</span> Wishlist
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex-direction:column;">
+      <div class="tab-header">
+        <div class="tab-link active" data-tab="description">Description</div>
+        <div class="tab-link" data-tab="reviews">Reviews</div>
+      </div>
+      <div id="description" class="tab-content active">
+        <p id="tab-description">Loading…</p>
+      </div>
+      <div id="reviews" class="tab-content">
+        <div id="reviews-list"></div>
+        <div id="add-review-form-container" class="form-container">
+          <h3>Write a Review</h3>
+          <form id="add-review-form">
+            <select id="rating" name="rating" required>
+              <option value="">Select Rating</option>
+              <option value="5">5 - Excellent</option>
+              <option value="4">4 - Good</option>
+              <option value="3">3 - Average</option>
+              <option value="2">2 - Fair</option>
+              <option value="1">1 - Poor</option>
+            </select>
+            <textarea id="comment" name="comment" rows="3" placeholder="Your review…" required></textarea>
+            <button type="submit" class="btn">Submit Review</button>
+            <div id="review-message" class="form-message"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="container">
+    <p>© 2025 Fashionsta. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const loader = document.getElementById('product-detail-loader');
+      const detailBox = document.querySelector('.product-detail-container');
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+      if (!id) return loader.textContent = 'No product specified.';
+
+      try {
+        const product = await makeApiRequest(`/products/${id}`);
+        // inject fields
+        document.getElementById('product-main-image').src =
+          STATIC_BASE_URL + (product.images[0] || '/images/placeholder.png');
+        document.getElementById('product-name-detail').textContent = product.name;
+        document.getElementById('product-brand-detail').textContent = product.brand || '';
+        document.getElementById('product-rating-detail').textContent =
+          `Rating: ${product.ratings.toFixed(1)}/5 (${product.numOfReviews})`;
+        document.getElementById('product-price-detail').textContent =
+          `₹${product.price.toFixed(2)}`;
+        document.getElementById('product-description-detail').textContent =
+          product.description;
+
+        // SIZES
+        const sizeEl = document.getElementById('size-options');
+        sizeEl.innerHTML = product.sizes.map(sz =>
+          `<button data-size="${sz}">${sz}</button>`
+        ).join('');
+        sizeEl.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            sizeEl.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+          });
+        });
+
+        // THUMBNAILS
+        const thumbs = document.getElementById('thumbnail-images');
+        thumbs.innerHTML = product.images.map((u,i) =>
+          `<img src="${STATIC_BASE_URL}${u}" data-index="${i}" />`
+        ).join('');
+        thumbs.querySelectorAll('img').forEach(img => {
+          img.addEventListener('click', () => {
+            document.getElementById('product-main-image').src = img.src;
+          });
+        });
+
+        loader.style.display = 'none';
+        detailBox.style.display = 'flex';
+      } catch (e) {
+        loader.textContent = `Error loading product: ${e.message}`;
+      }
+
+      // IMAGE ZOOM
+      document.getElementById('zoomIcon').onclick = () => {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+          <span class="close">&times;</span>
+          <img src="${document.getElementById('product-main-image').src}">
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+        modal.querySelector('.close').onclick = () => modal.remove();
+      };
+
+      // TABS
+      document.querySelectorAll('.tab-link').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.tab).classList.add('active');
+        };
+      });
+
+      // REVIEWS
+      const reviewsContainer = document.getElementById('reviews-list');
+      async function loadReviews() {
+        reviewsContainer.innerHTML = 'Loading reviews…';
+        try {
+          const revs = await makeApiRequest(`/reviews/${id}`);
+          if (!revs.length) {
+            reviewsContainer.textContent = 'No reviews yet.';
+          } else {
+            reviewsContainer.innerHTML = revs.map(r => `
+              <div class="review-item">
+                <div><strong>${r.userName}</strong> — ${new Date(r.createdAt).toLocaleDateString()}</div>
+                <div class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+                <p>${r.comment}</p>
+              </div>
+            `).join('');
+          }
+        } catch {
+          reviewsContainer.textContent = 'Failed to load reviews.';
+        }
+      }
+      await loadReviews();
+
+      document.getElementById('add-review-form').onsubmit = async e => {
+        e.preventDefault();
+        const rating = e.target.rating.value;
+        const comment = e.target.comment.value;
+        try {
+          await makeApiRequest(`/reviews/${id}`, 'POST', { rating, comment }, true);
+          document.getElementById('review-message').textContent = 'Review added!';
+          await loadReviews();
+          e.target.reset();
+        } catch (er) {
+          document.getElementById('review-message').textContent = er.message;
+        }
+      };
+
+      // CART & WISHLIST
+      document.getElementById('add-to-cart-btn-detail').onclick = async () => {
+        const qty = +document.getElementById('quantity-detail').value;
+        await makeApiRequest('/users/cart', 'POST', { productId: id, quantity: qty, size: '' }, true);
+        alert('Added to cart!');
+        updateCartCount();
+      };
+      document.getElementById('add-to-wishlist-btn-detail').onclick = async () => {
+        await makeApiRequest('/users/wishlist', 'POST', { productId: id }, true);
+        alert('Added to wishlist!');
+        updateWishlistCount();
+      };
+    });
+  </script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+</body>
+</html>

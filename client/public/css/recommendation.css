@@ -1,0 +1,336 @@
+/* Recommendation styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ecebfc;
+    color: #1f2937;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1500px;
+    margin: auto;
+}
+
+.header {
+background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e1b4b;
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #1e1b4b;
+    font-weight: 500;
+    font-size: 1rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.menu a:hover,
+.menu a.active {
+    color: #6c63ff;
+    border-bottom-color: #6c63ff;
+    text-decoration: none;
+}
+
+.heading {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #1e1b4b;
+}
+
+.subheading {
+    font-size: 1rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #f5f3ff;
+    border: none;
+    border-radius: 12px;
+    padding: 2rem;
+    flex: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.wide {
+    flex: 2;
+}
+
+.form select,
+.form button {
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #e0e7ff;
+    color: #1e1b4b;
+    font-size: 1rem;
+}
+
+.btn {
+    background-color: #6c63ff;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #574fd6;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    margin-top: 8px;
+    padding: 0.8rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.color {
+    background-color: #ff7849;
+    color: white;
+}
+
+.style {
+    background-color: #fbcfe8;
+    color: #831843;
+}
+
+.fit {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.placeholder {
+    color: #9ca3af;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.shop-link {
+    text-align: right;
+    margin-top: 1rem;
+}
+
+.shop-link a {
+    color: #6c63ff;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+header {
+    background-color: #fff;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+nav .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+nav .nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: var(--secondary-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+nav .nav-links a:hover,
+nav .nav-links a.active { /* Add 'active' class via JS for current page */
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    text-decoration: none;
+}
+
+nav .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative; /* For autocomplete */
+}
+
+nav .nav-icons a {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+nav .nav-icons a:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+#search-bar {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    min-width: 250px;
+    font-size: 0.9rem;
+}
+#search-bar:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(255, 63, 108, 0.2);
+}
+
+.autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0; /* Adjust based on search bar position */
+    width: 100%; /* Or width of search bar */
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    z-index: 999;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.autocomplete-results div {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.autocomplete-results div:hover {
+    background-color: var(--accent-color);
+}
+@media (max-width: 768px) {
+    nav {
+        padding: 0 10px;
+    }
+    nav .logo {
+        font-size: 1.5rem;
+    }
+    nav .nav-icons {
+        gap: 10px;
+    }
+    nav .nav-icons #search-bar {
+        /* Maybe hide search bar in icons and make it a separate clickable icon */
+        display: none; /* Example: replace with icon */
+    }
+    .nav-icons .icon-search-mobile { display: inline-block; /* Add this icon to HTML */ }
+
+    .container {
+        width: 95%;
+    }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.5rem; }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for mobile */
+        gap: 15px;
+    }
+    .product-card .product-info {
+        padding: 10px;
+    }
+    .product-card h3 {
+        font-size: 0.9rem;
+    }
+    .product-card .price {
+        font-size: 0.95rem;
+    }
+
+    .cart-item, .wishlist-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .cart-item-image img, .wishlist-item-image img {
+        margin-bottom: 10px;
+    }
+    .cart-item-actions, .wishlist-item-actions {
+        margin-top: 10px;
+    }
+
+    .form-container {
+        margin: 20px auto;
+        padding: 20px;
+    }
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fashionsta - Home</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <a href="index.html" style="color: var(--primary-color); text-decoration: none;">Fashionsta</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="products.html?category=Men">Men</a></li>
+        <li><a href="products.html?category=Women">Women</a></li>
+        <li><a href="products.html?category=Fashion Accessories">Accessories</a></li>
+        <!-- <li><a href="products.html?category=Men Footwear">Men Footwear</a></li>
+        <li><a href="products.html?category=Women Footwear">Women Footwear</a></li> -->
+        <li><a href="recommendation.html">Recommendations</a></li>
+      </ul>
+      <div class="nav-icons">
+        <input type="search" id="search-bar" placeholder="Search products..." />
+        <div id="autocomplete-results" class="autocomplete-results"></div>
+        <a href="wishlist.html" id="wishlist-link">Wishlist (<span id="wishlist-count">0</span>)</a>
+        <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+        <span id="user-actions">
+          <a href="profile.html" id="user-profile-link" style="display:none;">Profile</a>
+          <a href="login.html" id="login-link">Login</a>
+          <span id="auth-separator" style="display:none;">/</span>
+          <a href="signup.html" id="signup-link">Signup</a>
+          <a href="#" id="logout-button" style="display:none;">Logout</a>
+        </span>
+        <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+
+
+  
+
+
+    <section class="categories-preview" style="margin-top: 40px;">
+      <h2>Shop by Category</h2>
+      <div class="category-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        <a href="products.html?category=Men" class="category-card card">
+          <img
+            src="images/catagory/mens.jpg"
+            alt="Men Fashion"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"
+          />
+          <h3>Men</h3>
+        </a>
+
+        <a href="products.html?category=Women" class="category-card card">
+          <img
+            src="images/catagory/women's.jpg"
+            alt="Women Fashion"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"
+          />
+          <h3>Women</h3>
+        </a>
+
+        <a href="products.html?category=New Arrivals" class="category-card card">
+          <img
+            src="images/catagory/na.jpg"
+            alt="New Arrivals"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"
+          />
+          <h3>New Arrivals</h3>
+        </a>
+
+        <a href="products.html?category=Sale" class="category-card card">
+          <img
+            src="images/catagory/sale.jpg"
+            alt="Sale"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"
+          />
+          <h3>Sale</h3>
+        </a>
+
+        <a href="products.html?category=Women Footwear" class="category-card card">
+          <img
+            src="images/catagory/wf.jpg"
+            alt="Women Footwear"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"
+          />
+          <h3>Women Footwear</h3>
+        </a>
+
+        <a href="products.html?category=Men Footwear" class="category-card card">
+          <img
+            src="images/catagory/mf.jpg"
+            alt="Men Footwear"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"
+          />
+          <h3>Men Footwear</h3>
+        </a>
+
+        <a href="products.html?category=Fashion Accessories" class="category-card card">
+          <img
+            src="images/catagory/acc.jpg"
+            alt="Accessories"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;"
+          />
+          <h3>Accessories</h3>
+        </a>
+      </div>
+    </section>
+
+
+    <section id="recommended-for-you-section">
+      <h2>Recommended for You</h2>
+      <div id="recommendations-loader" class="loader d-none"></div>
+      <div class="product-grid" id="recommendations-grid">
+        <!-- JS-inserted product cards -->
+      </div>
+    </section>
+
+    
+  </main>
+
+
+
+  <footer>
+    <p>© 2025 Fashionsta. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const result = await response.json();
+        document.getElementById('result').innerHTML = `
+          <p>${result.message || 'Upload complete.'}</p>
+          ${
+            result.image && result.image.url
+              ? `<img src="${result.image.url}" alt="Uploaded Image" width="200"/>`
+              : ''
+          }
+        `;
+      } catch (err) {
+        document.getElementById('result').innerHTML = `<p style="color:red;">Upload failed. Please try again.</p>`;
+      }
+    });
+  </script>
+  <script src="js/main.js"></script>
+  <script src="js/recommendation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/products.js"></script>
+</body>
+</html>

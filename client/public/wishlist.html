@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Wishlist - Fashionsta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <!-- Standard Header -->
+        <nav>
+            <div class="logo"><a href="index.html" style="color: var(--primary-color); text-decoration: none;">Fashionsta</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html?category=Men">Men</a></li>
+                <li><a href="products.html?category=Women">Women</a></li>
+                <li><a href="products.html?category=Fashion Accessories">Accessories</a></li>
+            </ul>
+            <div class="nav-icons">
+                <input type="search" id="search-bar" placeholder="Search products...">
+                <div id="autocomplete-results" class="autocomplete-results"></div>
+                <a href="wishlist.html" id="wishlist-link">Wishlist (<span id="wishlist-count">0</span>)</a>
+                <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+                 <span id="user-actions">
+                    <a href="profile.html" id="user-profile-link" style="display:none;">Profile</a>
+                    <a href="login.html" id="login-link">Login</a>
+                    <span id="auth-separator" style="display:none;">/</span> <a href="signup.html" id="signup-link">Signup</a>
+                    <a href="#" id="logout-button" style="display:none;">Logout</a>
+                </span>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container wishlist-page">
+        <h1>Your Wishlist</h1>
+        <div id="wishlist-loader" class="loader d-none"></div>
+        <div id="wishlist-items-container" class="product-grid"> <!-- Re-use product-grid for layout if desired -->
+            <!-- Wishlist items loaded by wishlist.js -->
+        </div>
+        <p id="empty-wishlist-message" class="empty-wishlist-message" style="display:none;">Your wishlist is empty. <a href="index.html">Discover products!</a></p>
+    </main>
+
+    <footer>
+        <p>© 2025 Fashionsta. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/cart.js"></script> <!-- For globalAddToCart -->
+</body>
+</html>

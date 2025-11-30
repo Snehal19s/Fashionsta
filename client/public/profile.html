@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile - Fashionsta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <!-- Standard Header -->
+        <nav>
+            <div class="logo"><a href="index.html" style="color: var(--primary-color); text-decoration: none;">Fashionsta</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html?category=Men">Men</a></li>
+                <li><a href="products.html?category=Women">Women</a></li>
+                <li><a href="products.html?category=Fashion Accessories">Accessories</a></li>
+            </ul>
+            <div class="nav-icons">
+                <input type="search" id="search-bar" placeholder="Search products...">
+                <div id="autocomplete-results" class="autocomplete-results"></div>
+                <a href="wishlist.html" id="wishlist-link">Wishlist (<span id="wishlist-count">0</span>)</a>
+                <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+                 <span id="user-actions">
+                    <a href="profile.html" id="user-profile-link" style="display:none;">Profile</a>
+                    <a href="login.html" id="login-link">Login</a>
+                    <span id="auth-separator" style="display:none;">/</span> <a href="signup.html" id="signup-link">Signup</a>
+                    <a href="#" id="logout-button" style="display:none;">Logout</a>
+                </span>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="form-container" style="max-width: 600px;">
+            <h2>Your Profile Settings</h2>
+            <p>Set your preferences to get better recommendations!</p>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                 <div class="form-group">
+                    <label for="password">New Password (leave blank to keep current):</label>
+                    <input type="password" id="password" name="password" minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender">
+                        <option value="">Select Gender</option>
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bodyShape">Body Shape (e.g., athletic, slim, pear-shaped):</label>
+                    <input type="text" id="bodyShape" name="bodyShape" placeholder="e.g., athletic">
+                </div>
+                <div class="form-group">
+                    <label for="skinTone">Skin Tone (e.g., fair, medium, dark):</label>
+                    <input type="text" id="skinTone" name="skinTone" placeholder="e.g., medium">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+                <div id="profile-message" class="form-message"></div>
+            </form>
+            <hr style="margin: 30px 0;">
+            <a href="order-history.html" class="btn btn-secondary">View Order History</a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>© 2025 Fashionsta. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

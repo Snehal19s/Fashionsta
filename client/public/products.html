@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Fashionsta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html" style="color: var(--primary-color); text-decoration: none;">Fashionsta</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html?category=Men" id="nav-men">Men</a></li>
+                <li><a href="products.html?category=Women" id="nav-women">Women</a></li>
+                <li><a href="products.html?category=Fashion Accessories" id="nav-accessories">Accessories</a></li>
+                <li><a href="recommendation.html">Recomodations</a></li>
+            </ul>
+            <div class="nav-icons">
+                <input type="search" id="search-bar" placeholder="Search products...">
+                <div id="autocomplete-results" class="autocomplete-results"></div>
+                <a href="wishlist.html" id="wishlist-link">Wishlist (<span id="wishlist-count">0</span>)</a>
+                <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+                 <span id="user-actions">
+                    <a href="profile.html" id="user-profile-link" style="display:none;">Profile</a>
+                    <a href="login.html" id="login-link">Login</a>
+                    <span id="auth-separator" style="display:none;">/</span> <a href="signup.html" id="signup-link">Signup</a>
+                    <a href="#" id="logout-button" style="display:none;">Logout</a>
+                </span>
+                <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 id="page-title">Shop Products</h1> <!-- Title will be updated by JS based on category/search -->
+        <div class="product-listing-area">
+            <aside class="filters-sidebar">
+                <h3>Filters</h3>
+                <form id="filter-form">
+                    <div class="filter-group">
+                        <h4>Price Range</h4>
+                        <label for="minPrice">Min Price:</label>
+                        <input type="number" id="minPrice" name="minPrice" placeholder="0">
+                        <label for="maxPrice">Max Price:</label>
+                        <input type="number" id="maxPrice" name="maxPrice" placeholder="1000">
+                    </div>
+                    <div class="filter-group">
+                        <h4>Rating</h4>
+                        <select id="rating" name="rating">
+                            <option value="">Any Rating</option>
+                            <option value="4">4 Stars & Up</option>
+                            <option value="3">3 Stars & Up</option>
+                            <option value="2">2 Stars & Up</option>
+                            <option value="1">1 Star & Up</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Size (Example)</h4>
+                        <!-- This would be dynamically populated or have common sizes -->
+                        <label><input type="checkbox" name="size" value="S"> S</label>
+                        <label><input type="checkbox" name="size" value="M"> M</label>
+                        <label><input type="checkbox" name="size" value="L"> L</label>
+                        <label><input type="checkbox" name="size" value="XL"> XL</label>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-secondary">Apply Filters</button>
+                    <button type="reset" id="reset-filters-btn" class="btn btn-sm btn-outline-primary">Reset Filters</button>
+                </form>
+            </aside>
+            <section class="products-main-content">
+                <div id="products-loader" class="loader d-none"></div>
+                <div class="product-grid" id="product-listing-grid">
+                    <!-- Products will be loaded here by products.js -->
+                </div>
+                <div id="pagination-controls" class="pagination-controls" style="text-align: center; margin-top: 20px;">
+                    <!-- Pagination buttons will be added by JS if needed -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Fashionsta. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        // Small script to update page title and active nav link
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            const keyword = urlParams.get('keyword');
+            const pageTitleEl = document.getElementById('page-title');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+
+            if (category) {
+                pageTitleEl.textContent = `Shop ${category}`;
+                if (category === "Men") document.getElementById('nav-men')?.classList.add('active');
+                else if (category === "Women") document.getElementById('nav-women')?.classList.add('active');
+                else if (category === "Fashion Accessories") document.getElementById('nav-accessories')?.classList.add('active');
+            } else if (keyword) {
+                pageTitleEl.textContent = `Search results for: "${keyword}"`;
+            } else {
+                pageTitleEl.textContent = "All Products";
+            }
+
+            const filterForm = document.getElementById('filter-form');
+            document.getElementById('reset-filters-btn')?.addEventListener('click', () => {
+                filterForm.reset();
+                // Manually trigger product load after reset if not using form submit
+                // This assumes loadProducts is globally available or products.js handles it
+                if (typeof loadProducts === 'function') {
+                     loadProducts(1, true);
+                } else {
+                    // Fallback if loadProducts isn't global: submit the now empty form
+                     filterForm.dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

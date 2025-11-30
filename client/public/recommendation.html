@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Personalized Recommendations</title>
+  <link rel="stylesheet" href="./css/recommendation.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .placeholder { color: #777; font-style: italic; }
+    .color-box { width: 30px; height: 20px; display: inline-block; margin: 2px; border-radius: 4px; }
+    .swatches { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px; }
+    #faceCanvas { display: none; }
+  </style>
+</head>
+<body class="container">
+
+  <header>
+    <nav>
+      <div class="logo">
+        <a href="index.html" style="color: var(--primary-color); text-decoration: none;">Fashionsta</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="products.html?category=Men">Men</a></li>
+        <li><a href="products.html?category=Women">Women</a></li>
+        <li><a href="products.html?category=Fashion Accessories">Accessories</a></li>
+        <li><a href="recommendation.html">Recommendations</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h1 class="heading">Personalized Recommendations</h1>
+  <p class="subheading">Upload a photo and select your body shape to see your skin tone category and a tailored color palette!</p>
+
+  <div class="grid">
+    <!-- Input Form -->
+    <div class="card">
+      <h2>Your Style Profile</h2>
+      <form id="recommendationForm" class="form">
+        <label for="skinPhoto">Upload Your Photo</label>
+        <input type="file" id="skinPhoto" accept="image/*" required>
+
+        <label for="bodyShape">Body Shape</label>
+        <select id="bodyShape" required>
+          <option value="">--Select--</option>
+          <option>Hourglass</option>
+          <option>Pear</option>
+          <option>Apple</option>
+          <option>Rectangle</option>
+          <option>Inverted Triangle</option>
+        </select>
+
+        <button type="submit" class="btn">Get Recommendations</button>
+      </form>
+    </div>
+
+    <!-- Results -->
+    <div class="card wide">
+      <h2>Results</h2>
+      <div id="recommendationOutput">
+        <p class="placeholder">Fill the form to see recommendations.</p>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="faceCanvas"></canvas>
+
+  <!-- face-api.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+  <script>
+  window.addEventListener('load', async () => {
+    // 1) Load face detector
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+
+    // 2) Pre-made palettes for combinations of skin category & body shape
+    const paletteCombos = {
+      'fair': {
+        Hourglass: ['#FFF5E1','#FDEBD0','#FCF3CF','#F9E79F','#F7DC6F'],
+        Pear:      ['#F5EEF8','#E8DAEF','#D2B4DE','#BB8FCE','#AF7AC5'],
+        Apple:     ['#E8F6F3','#D1F2EB','#A3E4D7','#76D7C4','#48C9B0'],
+        Rectangle: ['#FEF9E7','#FCF3CF','#FAF0D1','#F7DC6F','#F4D03F'],
+        'Inverted Triangle': ['#EBF5FB','#D6EAF8','#A9CCE3','#7FB3D5','#5499C7']
+      },
+      'light brown': {
+        Hourglass: ['#F5DEB3','#F4D03F','#F8C471','#FAD7A0','#FDEBD0'],
+        Pear:      ['#FBEFEF','#F5CBA7','#E6B0AA','#D7BDE2','#C39BD3'],
+        Apple:     ['#FADBD8','#F5B7B1','#EC7063','#CD6155','#C0392B'],
+        Rectangle: ['#FCF3CF','#F9E79F','#F4D03F','#D4AC0D','#B7950B'],
+        'Inverted Triangle': ['#D5DBDB','#AEB6BF','#85929E','#5D6D7E','#2E4053']
+      },
+      'medium brown': {
+        Hourglass: ['#C19A6B','#A67B5B','#8B5C48','#7B3F00','#5C3317'],
+        Pear:      ['#BC8F8F','#A0522D','#8B4513','#A0522D','#D2691E'],
+        Apple:     ['#DEB887','#D2B48C','#C49E54','#AF601A','#6E2C00'],
+        Rectangle: ['#D7CCC8','#BCAAA4','#A1887F','#7B5E57','#4E342E'],
+        'Inverted Triangle': ['#9A7D0A','#7D6608','#6E2C00','#784212','#512E5F']
+      },
+      'dark brown': {
+        Hourglass: ['#654321','#4A2E19','#3B2314','#2C1B0F','#1D1309'],
+        Pear:      ['#3E2723','#2E1518','#1E0B0E','#0F0404','#000000'],
+        Apple:     ['#2E8B57','#006400','#2E8B57','#3B5323','#556B2F'],
+        Rectangle: ['#4B0082','#8A2BE2','#483D8B','#301934','#191970'],
+        'Inverted Triangle': ['#191970','#000080','#00008B','#0000CD','#0000FF']
+      },
+      'deep brown': {
+        Hourglass: ['#800000','#8B0000','#A52A2A','#B22222','#CD5C5C'],
+        Pear:      ['#4B0082','#400080','#3A0070','#300060','#20004B'],
+        Apple:     ['#006400','#004D00','#003A00','#002B00','#001F00'],
+        Rectangle: ['#8B008B','#800080','#660066','#4B004B','#300030'],
+        'Inverted Triangle': ['#2C2C2C','#1A1A1A','#0D0D0D','#050505','#000000']
+      }
+    };
+
+    // 3) Handle form submission
+    document.getElementById('recommendationForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('skinPhoto');
+      const shapeSelect = document.getElementById('bodyShape');
+      const output = document.getElementById('recommendationOutput');
+
+      if (!fileInput.files[0] || !shapeSelect.value) {
+        output.innerHTML = '<p class="placeholder">Please select a photo and your body shape.</p>';
+        return;
+      }
+      output.innerHTML = '<p class="placeholder">⏳ Processing...</p>';
+
+      // 4) Load the image
+      const file = fileInput.files[0];
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      await img.decode();
+
+      // 5) Detect the face
+      const det = await faceapi.detectSingleFace(img);
+      if (!det) {
+        output.innerHTML = '<p>No face detected.</p>';
+        return;
+      }
+
+      // 6) Crop to the face region
+      const { x, y, width, height } = det.box;
+      const canvas = document.getElementById('faceCanvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, x, y, width, height, 0, 0, width, height);
+
+      // 7) Compute average luminance
+      const data = ctx.getImageData(0, 0, width, height).data;
+      let [rSum, gSum, bSum] = [0,0,0];
+      const pxCount = data.length / 4;
+      for (let i = 0; i < data.length; i += 4) {
+        rSum += data[i];
+        gSum += data[i+1];
+        bSum += data[i+2];
+      }
+      const rAvg = rSum/pxCount, gAvg = gSum/pxCount, bAvg = bSum/pxCount;
+      const lum = 0.2126*rAvg + 0.7152*gAvg + 0.0722*bAvg;
+
+      // 8) Determine category with five bands
+      let category;
+      if (lum >= 180)          category = 'fair';
+      else if (lum >= 140)     category = 'light brown';
+      else if (lum >= 100)     category = 'medium brown';
+      else if (lum >= 80)     category = 'dark brown';
+      else                      category = 'deep brown';
+
+      // 9) Lookup palette for that category + body shape
+      const bodyShape = shapeSelect.value;
+      const palette = (paletteCombos[category] || {})[bodyShape] || [];
+
+      // 10) Render the results
+      let html = `<p><strong>Skin category:</strong> ${category}</p>`;
+      html += '<h4>Suggested Palette:</h4><div class="swatches">';
+      palette.forEach(col => {
+        html += `<div class="color-box" style="background:${col}"></div>`;
+      });
+      html += '</div>';
+      output.innerHTML = html;
+    });
+  });
+  </script>
+
+</body>
+</html>

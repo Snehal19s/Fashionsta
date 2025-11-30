@@ -1,0 +1,88 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Fashionsta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <!-- Standard Header (simplified for checkout perhaps) -->
+        <nav>
+            <div class="logo"><a href="index.html" style="color: var(--primary-color); text-decoration: none;">Fashionsta</a></div>
+            <div class="checkout-header-text">Secure Checkout</div>
+             <span id="user-actions" style="margin-left:auto;"> <!-- Aligned to right if nav is flex -->
+                <a href="profile.html" id="user-profile-link" style="display:none;">Profile</a>
+                <a href="login.html" id="login-link">Login</a>
+                <span id="auth-separator" style="display:none;">/</span> <a href="signup.html" id="signup-link">Signup</a>
+                <a href="#" id="logout-button" style="display:none;">Logout</a>
+            </span>
+        </nav>
+    </header>
+
+    <main class="container checkout-page">
+        <h1>Checkout</h1>
+        <div id="checkout-loader" class="loader d-none"></div>
+        <div class="checkout-layout">
+            <section class="shipping-payment-form">
+                <form id="checkout-form" class="form-container">
+                    <h2>Shipping Address</h2>
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Street Address:</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postalCode">Postal Code:</label>
+                        <input type="text" id="postalCode" name="postalCode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country:</label>
+                        <input type="text" id="country" name="country" required>
+                    </div>
+
+                    <h2>Payment Details (Dummy)</h2>
+                    <p>This is a dummy payment section. No real payment will be processed.</p>
+                    <div class="form-group">
+                        <label for="card-name">Name on Card:</label>
+                        <input type="text" id="card-name" name="card-name" value="Test User">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-number">Card Number:</label>
+                        <input type="text" id="card-number" name="card-number" value="**** **** **** 1234">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+                    <div id="checkout-message" class="form-message"></div>
+                </form>
+            </section>
+            <aside class="order-summary-checkout-container">
+                <h3>Order Summary</h3>
+                <div id="order-summary-checkout">
+                    <!-- Summary loaded by checkout.js -->
+                    <p>Loading your order...</p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Fashionsta. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>

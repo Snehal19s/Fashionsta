@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product Manually - Fashionsta Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"> <!-- Assuming your main style.css -->
+    <style>
+        body { background-color: #f4f4f4; padding-top: 20px; }
+        .form-container { max-width: 700px; margin: 30px auto; }
+        .admin-form .form-group { margin-bottom: 15px; }
+        .admin-form label { font-weight: 600; }
+        .admin-form input[type="text"],
+        .admin-form input[type="number"],
+        .admin-form textarea,
+        .admin-form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .admin-form textarea { min-height: 80px; }
+        .admin-form button {
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .admin-form button:hover { background-color: #218838; }
+        .form-message { margin-top: 15px; padding: 10px; border-radius: 4px; }
+        .form-message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;}
+        .form-message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Add New Product to Database</h2>
+            <p><em>For this form, provide image URLs directly. Ensure your backend '/api/admin/products' route can handle this.</em></p>
+            <form id="manual-add-product-form" class="admin-form">
+                <div class="form-group">
+                    <label for="name">Product Name:</label>
+                    <input type="text" id="name" name="name" required value="Sample Men's Shirt">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required>A cool sample shirt.</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01" required value="29.99">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <option value="Men" selected>Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Fashion Accessories">Fashion Accessories</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender Target:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="Men" selected>Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Unisex">Unisex</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock Quantity:</label>
+                    <input type="number" id="stock" name="stock" required value="50">
+                </div>
+                <div class="form-group">
+                    <label for="sizes">Sizes (comma-separated, e.g., S,M,L or 7,8,9):</label>
+                    <input type="text" id="sizes" name="sizes" value="S,M,L,XL">
+                </div>
+                <div class="form-group">
+                    <label for="images">Image URLs (comma-separated):</label>
+                    <input type="text" id="images" name="images" placeholder="/images/myproduct.jpg,/images/myproduct_thumb.jpg" value="/images/placeholder.png">
+                    <small>Example: /images/product1.jpg,/images/product1_angle.jpg (Ensure these images exist in client/public/images or are valid external URLs)</small>
+                </div>
+                 <div class="form-group">
+                    <label for="brand">Brand (Optional):</label>
+                    <input type="text" id="brand" name="brand" value="Fashionsta Basics">
+                </div>
+                <div class="form-group">
+                    <label for="bodyShapeTags">Body Shape Tags (comma-separated):</label>
+                    <input type="text" id="bodyShapeTags" name="bodyShapeTags" value="slim,athletic">
+                </div>
+                <div class="form-group">
+                    <label for="skinToneTags">Skin Tone Tags (comma-separated):</label>
+                    <input type="text" id="skinToneTags" name="skinToneTags" value="fair,medium">
+                </div>
+
+                <button type="submit">Add Product</button>
+                <div id="add-product-message" class="form-message" style="display:none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simplified API request logic directly in this page for ease of use
+        const API_BASE_URL = 'http://localhost:5001/api'; // Ensure this is your backend URL
+
+        async function makeAdminApiRequest(endpoint, method = 'POST', body = null) {
+            // You'd typically get this from localStorage after an admin login
+            // For this manual tool, you might need to hardcode an admin token if your route is protected
+            // OR temporarily disable auth on the /api/admin/products route for seeding IF YOU ARE CAREFUL
+            // It's better to log in as admin in your main app, get the token from localStorage,
+            // and paste it here if needed.
+            const adminAuthToken = localStorage.getItem('authToken'); // Assumes admin is logged in in another tab
+                                                                    // and 'authToken' is the correct key
+
+            if (!adminAuthToken) {
+                // Try to get from prompt if not in local storage - for quick testing
+                const promptedToken = prompt("Admin auth token not found in localStorage. Please paste admin JWT token (or leave blank if route is unprotected for seeding):");
+                if (!promptedToken && endpoint.startsWith('/admin')) { // Check if it's an admin route
+                     displayMessage('add-product-message', 'Admin Auth Token is required for this operation. Please log in as admin in the main app.', true);
+                     return Promise.reject('Admin token required');
+                }
+                localStorage.setItem('manualAdminToken', promptedToken); // Store it for this session if provided
+            }
+            const tokenToUse = localStorage.getItem('manualAdminToken') || adminAuthToken;
+
+
+            const headers = { 'Content-Type': 'application/json' };
+            if (tokenToUse && endpoint.startsWith('/admin')) { // Only add auth for admin routes
+                headers['Authorization'] = `Bearer ${tokenToUse}`;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    method,
+                    headers,
+                    body: JSON.stringify(body)
+                });
+                const responseData = await response.json();
+                if (!response.ok) {
+                    throw new Error(responseData.message || `Request failed with status ${response.status}`);
+                }
+                return responseData;
+            } catch (error) {
+                console.error('API Request Error:', error);
+                throw error;
+            }
+        }
+
+        function displayMessage(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = message;
+                element.className = isError ? 'form-message error' : 'form-message success';
+                element.style.display = 'block';
+            }
+        }
+
+        document.getElementById('manual-add-product-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const messageDiv = document.getElementById('add-product-message');
+            messageDiv.style.display = 'none';
+            messageDiv.textContent = '';
+
+            const formData = new FormData(this);
+            const productData = {};
+            formData.forEach((value, key) => {
+                if (key === 'images' || key === 'sizes' || key === 'bodyShapeTags' || key === 'skinToneTags') {
+                    // Split comma-separated strings into arrays, trim whitespace
+                    productData[key] = value ? value.split(',').map(item => item.trim()).filter(item => item) : [];
+                } else if (key === 'price' || key === 'stock') {
+                    productData[key] = parseFloat(value);
+                }
+                else {
+                    productData[key] = value;
+                }
+            });
+
+             // Ensure arrays are not empty if they were an empty string initially
+            if (productData.images.length === 0 && formData.get('images').trim() === '') productData.images = [];
+            if (productData.sizes.length === 0 && formData.get('sizes').trim() === '') productData.sizes = [];
+            if (productData.bodyShapeTags.length === 0 && formData.get('bodyShapeTags').trim() === '') productData.bodyShapeTags = [];
+            if (productData.skinToneTags.length === 0 && formData.get('skinToneTags').trim() === '') productData.skinToneTags = [];
+
+
+            console.log('Submitting Product Data:', productData);
+
+            try {
+                // The admin route for creating products needs to be accessible
+                // and you need to be authenticated as an admin if it's protected.
+                const result = await makeAdminApiRequest('/admin/products', 'POST', productData);
+                displayMessage('add-product-message', `Product "${result.name}" added successfully! ID: ${result._id}`, false);
+                this.reset(); // Clear the form
+            } catch (error) {
+                displayMessage('add-product-message', `Error adding product: ${error.message}`, true);
+            }
+        });
+    </script>
+</body>
+</html>
